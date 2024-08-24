@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a2a4f;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        .welcome {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: -200px;
+        }
+
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: -130px;
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            margin: 300px auto;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar .progress {
+            height: 100%;
+            width: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: loading 5s infinite;
+        }
+
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        .music-player {
+            margin-top: -450px;
+        }
+
+        .music-player button {
+            width: 50px;
+            height: 50px;
+            background-color: #b078f7;
+            border: none;
+            border-radius: 10px;
+            margin: 0 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+        }
+
+        .volume-slider {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-width: 150px;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://cdn.discordapp.com/attachments/1247595820102979656/1276903309562744842/veutyrollspel.png?ex=66cb3860&is=66c9e6e0&hm=71100dfb979657b7202faaab4bc2126d6a1117aa8f634f1e8c1f2f4bb93b1b80&" alt="Logo">
+        </div>
+        <div class="loading-text">Laddar in till Veuty...</div>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <div class="music-player">
+            <button onclick="previousTrack()">&#9664;</button>
+            <button onclick="togglePlayPause()">&#10074;&#10074;</button>
+            <button onclick="nextTrack()">&#9654;</button>
+            <input type="range" class="volume-slider" min="0" max="1" step="0.01" oninput="setVolume(this.value)">
+        </div>
+    </div>
+
+    <script>
+        let audio = new Audio();
+        let isPlaying = false;
+        let currentTrack = 0;
+
+        const tracks = [
+            'song1.mp3',
+            'song2.mp3',
+            'song3.mp3'
+        ];
+
+        function loadTrack(trackIndex) {
+            audio.src = tracks[trackIndex];
+            audio.load();
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function previousTrack() {
+            currentTrack = (currentTrack > 0) ? currentTrack - 1 : tracks.length - 1;
+            loadTrack(currentTrack);
+            audio.play();
+            isPlaying = true;
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack < tracks.length - 1) ? currentTrack + 1 : 0;
+            loadTrack(currentTrack);
+            audio.play();
+            isPlaying = true;
+        }
+
+        function setVolume(volume) {
+            audio.volume = volume;
+        }
+
+        window.onload = () => {
+            loadTrack(currentTrack);
+        };
+    </script>
+</body>
+</html>
